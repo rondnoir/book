@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marine Gallet</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .hero-section {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            padding-top: 15vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .scroll-text {
+            font-size: 10rem;
+            font-weight: 300;
+            width: 100%;
+            padding: 0 2rem;
+            position: absolute;
+            top: 20vh;
+            left: 0;
+        }
+
+        .scroll-text span {
+            display: block;
+            line-height: 1.8;
+            transition: opacity 0.3s ease;
+        }
+
+        .scroll-text .word1 {
+            text-align: left;
+            margin-bottom: 2rem;
+        }
+
+        .scroll-text .word2 {
+            text-align: right;
+        }
+
+        .scroll-text.initial span,
+        .scroll-text.scroll span {
+            opacity: 0;
+        }
+
+        .series-section {
+            padding: 50px 0 0 0;
+        }
+
+        .series-item {
+            display: flex;
+            align-items: center;
+            margin: 50px 0;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .series-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .series-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .series-item:nth-child(odd) {
+            flex-direction: row;
+        }
+
+        .series-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .series-image {
+            flex: 1;
+            padding: 2rem;
+        }
+
+        .series-image img {
+            width: 100%;
+            height: auto;
+            max-height: 600px;
+            object-fit: cover;
+        }
+
+        .series-content {
+            flex: 1;
+            padding: 2rem;
+        }
+
+        .series-title {
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+            cursor: pointer;
+        }
+
+        .series-description {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            font-weight: 300;
+            white-space: pre-line;
+            text-align: justify;
+            margin: 0 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .scroll-text {
+                font-size: 5rem;
+                padding: 0 1rem;
+            }
+
+            .scroll-text span {
+                line-height: 1.5;
+            }
+
+            .scroll-text .word1 {
+                margin-bottom: 1.5rem;
+            }
+
+            .series-item {
+                flex-direction: column !important;
+                margin: 50px 0;
+            }
+
+            .series-image, .series-content {
+                padding: 1rem;
+            }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .modal-content {
+            position: relative;
+            width: 90%;
+            max-width: 1200px;
+            height: 90vh;
+            margin: 2% auto;
+        }
+
+        .modal-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: var(--text-color);
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1001;
+            background: rgba(128, 128, 128, 0.2);
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .close-modal:hover {
+            background: rgba(128, 128, 128, 0.4);
+            transform: scale(1.1);
+        }
+
+        .modal-nav {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+            transform: translateY(-50%);
+        }
+
+        .modal-nav button {
+            background: rgba(128, 128, 128, 0.2);
+            border: none;
+            color: var(--text-color);
+            padding: 20px 25px;
+            cursor: pointer;
+            font-size: 24px;
+            transition: all 0.3s ease;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-nav button:hover {
+            background: rgba(128, 128, 128, 0.4);
+            transform: scale(1.1);
+        }
+
+        .modal-counter {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--text-color);
+            font-size: 16px;
+        }
+
+        [data-theme="light"] .close-modal,
+        [data-theme="light"] .modal-nav button {
+            background: rgba(60, 60, 60, 0.2);
+            color: #333;
+        }
+
+        [data-theme="light"] .close-modal:hover,
+        [data-theme="light"] .modal-nav button:hover {
+            background: rgba(60, 60, 60, 0.4);
+        }
+
+        /* Améliorations UX/UI */
+        .smooth-transition {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .series-item {
+            transition: transform 0.4s ease, opacity 0.8s ease;
+        }
+
+        .series-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .series-image img {
+            transition: transform 0.5s ease;
+        }
+
+        .series-image:hover img {
+            transform: scale(1.02);
+        }
+
+        /* Curseur personnalisé sur les éléments interactifs */
+        .series-item,
+        .modal-nav button,
+        .close-modal,
+        .burger-menu {
+            cursor: pointer;
+        }
+
+        /* Style du menu burger amélioré */
+        .burger-menu {
+            width: 30px;
+            height: 25px;
+            position: relative;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        .burger-line {
+            width: 100%;
+            height: 2px;
+            background-color: var(--text-color);
+            position: absolute;
+            transition: all 0.3s ease;
+        }
+
+        .burger-line:nth-child(1) { top: 0; }
+        .burger-line:nth-child(2) { top: 50%; transform: translateY(-50%); }
+        .burger-line:nth-child(3) { bottom: 0; }
+
+        /* Animation du burger en croix */
+        .burger-menu.active .burger-line:nth-child(1) {
+            transform: translateY(11px) rotate(45deg);
+        }
+
+        .burger-menu.active .burger-line:nth-child(2) {
+            opacity: 0;
+        }
+
+        .burger-menu.active .burger-line:nth-child(3) {
+            transform: translateY(-11px) rotate(-45deg);
+        }
+
+        /* Menu mobile */
+        .menu {
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .menu {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 80%;
+                height: 100vh;
+                background: var(--background-color);
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 2rem;
+                transition: right 0.3s ease;
+                z-index: 999;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            }
+
+            [data-theme="light"] .menu {
+                background: #fff;
+            }
+
+            [data-theme="light"] .menu a {
+                color: #333;
+            }
+
+            .menu.active {
+                right: 0;
+            }
+
+            .menu a {
+                opacity: 0;
+                transform: translateX(20px);
+                transition: opacity 0.3s ease, transform 0.3s ease;
+                font-size: 1.2rem;
+            }
+
+            .menu.active a {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Overlay pour le menu mobile */
+        .menu-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 998;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .menu-overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Styles spécifiques pour le header en mode mobile */
+        @media (max-width: 768px) {
+            header {
+                background: var(--header-bg);
+            }
+
+            .menu {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 80%;
+                height: 100vh;
+                background: var(--header-bg);
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 2rem;
+                transition: right 0.3s ease;
+                z-index: 999;
+            }
+
+            .menu.active {
+                right: 0;
+            }
+
+            .menu a {
+                color: var(--header-text);
+                font-size: 1.2rem;
+            }
+
+            .burger-menu {
+                display: flex;
+                z-index: 1000;
+            }
+
+            .burger-line {
+                background-color: var(--header-text);
+            }
+
+            /* Styles spécifiques pour le mode jour */
+            [data-theme="light"] header {
+                background: rgba(29, 29, 31, 0.95);
+            }
+
+            [data-theme="light"] .menu {
+                background: rgba(29, 29, 31, 0.95);
+            }
+
+            [data-theme="light"] .menu a,
+            [data-theme="light"] .logo {
+                color: var(--header-text);
+            }
+
+            [data-theme="light"] .burger-line {
+                background-color: var(--header-text);
+            }
+        }
+
+        footer {
+            margin-top: 0;
+            padding-top: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Marine Gallet</div>
+            <div class="burger-menu">
+                <div class="burger-line"></div>
+                <div class="burger-line"></div>
+                <div class="burger-line"></div>
+            </div>
+            <div class="menu">
+                <a href="histoire.html" data-translate="menu.story">Ma Démarche Artistique</a>
+                <a href="https://drive.google.com/file/d/1J7NZzIOv6W2n0xAmc0MIgOvGI9QjqqJq/view" target="_blank" data-translate="menu.portfolio">Portfolio</a>
+                <a href="contact.html" data-translate="menu.contact">Contact</a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="menu-overlay"></div>
+
+    <main>
+        <section class="hero-section">
+            <div class="scroll-text initial">
+                <span class="word1" data-translate="home.word1.initial">EXPLORER</span>
+                <span class="word2" data-translate="home.word2.initial">L'INVISIBLE</span>
+            </div>
+            <div class="scroll-text scroll">
+                <span class="word1" data-translate="home.word1.scroll">DÉCOUVRIR</span>
+                <span class="word2" data-translate="home.word2.scroll">MON UNIVERS</span>
+            </div>
+        </section>
+
+        <section class="series-section">
+            <div class="series-item">
+                <div class="series-image">
+                    <img src="images/cosme.jpg" alt="Série COSME">
+                </div>
+                <div class="series-content">
+                    <h2 class="series-title" data-translate="home.series.cosme.title">COSME</h2>
+                    <p class="series-description" data-translate="home.series.cosme.description">
+                        Dans ma série de photographies,"cosme", je traite l'écorce d'arbre comme une matière à la fois naturelle et symbolique, invitant à une contemplation de la nature où le macro rejoint le micro. À travers des zooms profonds et un traitement en négatif, les détails organiques se transforment en paysages oniriques, rappelant les mystères de l'univers. Ce dialogue visuel entre l'infiniment grand et l'infiniment petit questionne notre perception de notre environnement. Chaque image nous invite à explorer l'écorce comme une métaphore des structures cachées de notre environnement et de l'univers. Les motifs deviennent ainsi des portes ouvertes vers d'autres mondes, résonant avec les mystères de la biologie et du cosmos. Par cette approche, j'intègre une dimension écologique forte : elle nous rappelle l'importance de ce qui nous entoure, même dans ce qui semble ordinaire et négligeable. L'arbre, symbole de vie, se transforme sous mes clichés en une exploration abstraite et intime de la matière, reliant le macroscopique au microscopique, et nous incitant à repenser notre connexion avec la nature.
+                    </p>
+                </div>
+            </div>
+
+            <div class="series-item">
+                <div class="series-image">
+                    <img src="images/rapt.jpg" alt="Série RAPT">
+                </div>
+                <div class="series-content">
+                    <h2 class="series-title" data-translate="home.series.rapt.title">R.A.P.T.</h2>
+                    <p class="series-description" data-translate="home.series.rapt.description">
+                        R.A.P.T., acronyme de Ruptures Anonymes et Poésie des Transports, est un jeu de mot avec la R.A.T.P., lieu où sont pris ces clichés. Il incarne à la fois un hommage à l'artiste Jacques Villeglé et un rapt au sens littéral, un enlèvement fait avec violence. À travers cette série photographique, je m'intéresse aux affiches déchirées du métro. Ces images fragmentées, témoins silencieux du passage du temps et des usagers, se transforment en compositions abstraites à la frontière entre art et hasard. Chaque déchirure, superposition et strate de papier crée une nouvelle dynamique visuelle, révélant un langage graphique involontaire. En sublimant ces traces d'altération, je réinvente les messages publicitaires comme autant de toiles abstraites, où l'aléatoire et le temps se confrontent et dialoguent. Mon approche ne se limite pas à une recherche esthétique : c'est un questionnement sur notre perception de l'espace urbain et invite chacun à se questionner sur sa propre place dans cette ville qui nous façonne autant que nous la façonnons. En m'appuyant sur un travail de zoom, je plonge au cœur de ces surfaces fragmentées pour m'éloigner de la notion d'échelle. Le détail devient le sujet, et ce que l'on croit banal se transforme en un monde autonome, chargé de mystère. Ce déplacement du regard nous invite à contempler l'invisible, à voir la beauté insoupçonnée dans ce que nous avons appris à ignorer. R.A.P.T. incarne ma volonté de faire émerger une contemplation profonde à partir de l'ordinaire. Ces fragments deviennent des portes ouvertes sur un autre regard, où la ville cesse d'être un décor fonctionnel pour se révéler comme un espace vivant, contenant une beauté éphémère.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3 data-translate="contact.info">Informations</h3>
+                <p data-translate="contact.email">Email : marinegallet.art.designer@gmail.com</p>
+            </div>
+            <div class="footer-section">
+                <h3 data-translate="contact.follow">Suivez mon travail</h3>
+                <div class="social-links">
+                    <a href="https://www.instagram.com/marniegallet/" target="_blank">Instagram</a>
+                    <a href="https://fr.linkedin.com/in/marine-gallet-ab2a62a9" target="_blank">LinkedIn</a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <p data-translate="contact.message">Pour toute demande de collaboration ou d'information sur mes œuvres, n'hésitez pas à me contacter.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div id="modal-cosme" class="modal">
+        <span class="close-modal">&times;</span>
+        <div class="modal-content">
+            <img src="images/cosme/cosme1.jpg" alt="COSME 1" class="modal-image">
+            <div class="modal-nav">
+                <button class="prev">&#10094;</button>
+                <button class="next">&#10095;</button>
+            </div>
+            <div class="modal-counter">1 / 8</div>
+        </div>
+    </div>
+
+    <div id="modal-rapt" class="modal">
+        <span class="close-modal">&times;</span>
+        <div class="modal-content">
+            <img src="images/rapt/rapt1.jpg" alt="RAPT 1" class="modal-image">
+            <div class="modal-nav">
+                <button class="prev">&#10094;</button>
+                <button class="next">&#10095;</button>
+            </div>
+            <div class="modal-counter">1 / 6</div>
+        </div>
+    </div>
+
+    <script src="translations.js"></script>
+    <script src="theme-lang.js"></script>
+    <script src="script.js"></script>
+    <script>
+        // Effet de scroll pour le texte
+        const heroSection = document.querySelector('.hero-section');
+        const initialText = document.querySelector('.scroll-text.initial');
+        const scrollText = document.querySelector('.scroll-text.scroll');
+        const word1Initial = initialText.querySelector('.word1');
+        const word2Initial = initialText.querySelector('.word2');
+        const word1Scroll = scrollText.querySelector('.word1');
+        const word2Scroll = scrollText.querySelector('.word2');
+
+        // Fonction pour calculer l'opacité en fonction du scroll
+        function calculateOpacity(scroll, start, end) {
+            if (scroll <= start) return 1;
+            if (scroll >= end) return 0;
+            
+            const progress = (scroll - start) / (end - start);
+            return 1 - progress;
+        }
+
+        // Initialisation
+        word1Initial.style.opacity = 1;
+        word2Initial.style.opacity = 1;
+        word1Scroll.style.opacity = 0;
+        word2Scroll.style.opacity = 0;
+        
+        window.addEventListener('scroll', () => {
+            const scrollPosition = window.scrollY;
+            const viewportHeight = heroSection.offsetHeight;
+
+            // Seuils pour les mots initiaux
+            const word1StartOut = viewportHeight * 0.05;
+            const word1EndOut = viewportHeight * 0.15;
+            const word2StartOut = viewportHeight * 0.15;
+            const word2EndOut = viewportHeight * 0.25;
+
+            // Effet pour les mots initiaux
+            word1Initial.style.opacity = calculateOpacity(scrollPosition, word1StartOut, word1EndOut);
+            word2Initial.style.opacity = calculateOpacity(scrollPosition, word2StartOut, word2EndOut);
+
+            // Apparition des nouveaux mots à des seuils spécifiques
+            word1Scroll.style.opacity = scrollPosition > viewportHeight * 0.25 ? 1 : 0;
+            word2Scroll.style.opacity = scrollPosition > viewportHeight * 0.35 ? 1 : 0;
+        });
+
+        // Animation des séries au scroll
+        const seriesItems = document.querySelectorAll('.series-item');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.2
+        });
+
+        seriesItems.forEach(item => observer.observe(item));
+
+        // Configuration des modals
+        const modalConfig = {
+            cosme: {
+                images: [
+                    'images/cosme/cosme1.jpg',
+                    'images/cosme/cosme2.jpg',
+                    'images/cosme/cosme3.jpg',
+                    'images/cosme/cosme4.jpg',
+                    'images/cosme/cosme5.jpg',
+                    'images/cosme/cosme6.jpg',
+                    'images/cosme/cosme7.jpg',
+                    'images/cosme/cosme8.jpg'
+                ]
+            },
+            rapt: {
+                images: [
+                    'images/rapt/rapt1.jpg',
+                    'images/rapt/rapt2.jpg',
+                    'images/rapt/rapt3.jpg',
+                    'images/rapt/rapt4.jpg',
+                    'images/rapt/rapt5.jpg',
+                    'images/rapt/rapt6.jpg'
+                ]
+            }
+        };
+
+        // Gestionnaire de modal
+        class ModalManager {
+            constructor(modalId, images) {
+                this.modal = document.getElementById(modalId);
+                this.images = images;
+                this.currentIndex = 0;
+                this.modalImage = this.modal.querySelector('.modal-image');
+                this.counter = this.modal.querySelector('.modal-counter');
+                
+                // Event listeners
+                this.modal.querySelector('.close-modal').addEventListener('click', () => this.close());
+                this.modal.querySelector('.prev').addEventListener('click', () => this.navigate(-1));
+                this.modal.querySelector('.next').addEventListener('click', () => this.navigate(1));
+                
+                // Keyboard navigation
+                document.addEventListener('keydown', (e) => {
+                    if (this.modal.style.display === 'block') {
+                        if (e.key === 'Escape') this.close();
+                        if (e.key === 'ArrowLeft') this.navigate(-1);
+                        if (e.key === 'ArrowRight') this.navigate(1);
+                    }
+                });
+            }
+
+            open() {
+                this.modal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+                this.updateImage();
+            }
+
+            close() {
+                this.modal.style.display = 'none';
+                document.body.style.overflow = '';
+            }
+
+            navigate(direction) {
+                this.currentIndex = (this.currentIndex + direction + this.images.length) % this.images.length;
+                this.updateImage();
+            }
+
+            updateImage() {
+                this.modalImage.src = this.images[this.currentIndex];
+                this.counter.textContent = `${this.currentIndex + 1} / ${this.images.length}`;
+            }
+        }
+
+        // Initialisation des modals
+        const cosmeModal = new ModalManager('modal-cosme', modalConfig.cosme.images);
+        const raptModal = new ModalManager('modal-rapt', modalConfig.rapt.images);
+
+        // Ajout des event listeners pour ouvrir les modals
+        document.querySelector('.series-item:nth-child(1)').addEventListener('click', () => cosmeModal.open());
+        document.querySelector('.series-item:nth-child(2)').addEventListener('click', () => raptModal.open());
+
+        // Menu mobile
+        const burgerMenu = document.querySelector('.burger-menu');
+        const menu = document.querySelector('.menu');
+        const menuOverlay = document.querySelector('.menu-overlay');
+
+        function toggleMenu() {
+            burgerMenu.classList.toggle('active');
+            menu.classList.toggle('active');
+            menuOverlay.classList.toggle('active');
+            document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : '';
+        }
+
+        burgerMenu.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleMenu();
+        });
+
+        menuOverlay.addEventListener('click', (e) => {
+            if (e.target === menuOverlay) {
+                toggleMenu();
+            }
+        });
+
+        // Empêcher la fermeture du menu lors du clic sur les liens
+        menu.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+
+        // Fermer le menu uniquement lors du clic sur un lien
+        menu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (menu.classList.contains('active')) {
+                    toggleMenu();
+                }
+            });
+        });
+
+        // Fermer le menu au redimensionnement de la fenêtre
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768 && menu.classList.contains('active')) {
+                toggleMenu();
+            }
+        });
+    </script>
+</body>
+</html>

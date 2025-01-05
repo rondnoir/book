@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ma Démarche Artistique - Marine Gallet</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .histoire-content {
+            max-width: 800px;
+            margin: 120px auto 50px;
+            padding: 0 2rem;
+        }
+
+        .histoire-content p {
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+            font-weight: 300;
+        }
+
+        .portrait {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            margin: 2rem auto;
+            display: block;
+            border-radius: 4px;
+            filter: grayscale(20%);
+        }
+
+        footer {
+            background-color: var(--background-color);
+            padding: 3rem 2rem;
+            margin-top: 4rem;
+            border-top: 1px solid var(--text-color);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .footer-section {
+            padding: 0 1rem;
+        }
+
+        .footer-section h3 {
+            font-size: 1.2rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+        }
+
+        .footer-section p {
+            font-size: 1rem;
+            font-weight: 300;
+            margin-bottom: 0.5rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .social-links a:hover {
+            opacity: 0.7;
+        }
+
+        @media (max-width: 768px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo"><a href="histoire.html">Marine Gallet</a></div>
+            <div class="burger-menu">
+                <div class="burger-line"></div>
+                <div class="burger-line"></div>
+                <div class="burger-line"></div>
+            </div>
+            <div class="menu">
+                <a href="index.html" data-translate="menu.home">Accueil</a>
+
+                <a href="histoire.html" data-translate="menu.story">Ma Démarche Artistique</a>
+                <a href="https://drive.google.com/file/d/1J7NZzIOv6W2n0xAmc0MIgOvGI9QjqqJq/view" target="_blank" data-translate="menu.portfolio">Portfolio</a>
+                <a href="contact.html" data-translate="menu.contact">Contact</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="histoire-content">
+        <h1 data-translate="story.title">Ma Démarche Artistique</h1>
+        <h2 data-translate="story.subtitle">L'exploration de l'invisible</h2>
+        
+        <img src="images/Profil Typographique.jpg" alt="Marine Gallet" class="portrait">
+        
+        <p data-translate="story.text1">Ce que je capture ou façonne, c'est le dialogue silencieux entre l'infiniment petit et l'infiniment grand, entre l'humain et la nature, entre le visible et l'invisible. Mon travail, c'est ma manière d'explorer ces mondes et d'y inviter les autres, avec la certitude qu'en partageant ces questionnements, nous découvrons une vérité universelle : nous ne sommes pas seuls face au mystère.</p>
+        
+        <p data-translate="story.text2">Dans mon travail, je cherche à capturer l'essence de l'indéfinissable. Chaque image, chaque trait, chaque texture est une invitation à contempler le mystère et la beauté qui nous entoure. Il ne s'agit pas uniquement d'une simple célébration esthétique, mais d'un appel à s'arrêter, à regarder autrement, à questionner.</p>
+        
+        <p data-translate="story.text3">Je souhaite que mes œuvres plongent ceux qui les découvrent dans un état de contemplation profonde, où l'émerveillement face au détail, à l'ombre, ou à la matière révèle quelque chose de plus vaste : notre place, minuscule et pourtant précieuse, dans l'immensité de l'univers.</p>
+        
+        <p data-translate="story.text4">Mon art reflète mon propre vertige face à l'infini et mon émerveillement constant pour les choses invisibles que nous côtoyons chaque jour sans les voir. Mes photos d'écorces d'arbres et d'affiches déchirées ou les formes abstraites de mes dessins portent tous ce même message : le mystère est partout, même dans ce que nous croyons banal.</p>
+        
+        <p data-translate="story.text5">Cependant, il ne s'agit pas d'une exploration individuelle. Je veux que chacun, face à mon travail, sente une connexion intime entre son existence et cet univers qui est si mystérieux. Et pour ceux qui, comme moi, sont parfois submergés par ce sentiment d'émerveillement mêlé à une solitude presque cosmique, je veux offrir un refuge : un espace où ces émotions trouvent écho, où personne ne se sent seul à ressentir ce vertige.</p>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3 data-translate="contact.info">Informations</h3>
+                <p data-translate="contact.email">Email : marinegallet.art.designer@gmail.com</p>
+            </div>
+            <div class="footer-section">
+                <h3 data-translate="contact.follow">Suivez mon travail</h3>
+                <div class="social-links">
+                    <a href="https://www.instagram.com/marniegallet/" target="_blank">Instagram</a>
+                    <a href="https://fr.linkedin.com/in/marine-gallet-ab2a62a9" target="_blank">LinkedIn</a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <p data-translate="contact.message">Pour toute demande de collaboration ou d'information sur mes œuvres, n'hésitez pas à me contacter.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="translations.js"></script>
+    <script src="theme-lang.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

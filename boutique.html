@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boutique - Marine Gallet</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .boutique-content {
+            max-width: 1200px;
+            margin: 120px auto 50px;
+            padding: 0 2rem;
+        }
+
+        .artwork-container {
+            position: relative;
+            width: 100%;
+            height: calc(100vh - 200px);
+            overflow: hidden;
+        }
+
+        .artwork {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 2rem;
+        }
+
+        .artwork.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .artwork-image {
+            flex: 0 0 60%;
+            height: 100%;
+        }
+
+        .artwork-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .artwork-info {
+            flex: 0 0 35%;
+            padding: 2rem;
+            background: var(--accent-color);
+            border-radius: 4px;
+        }
+
+        .artwork-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            font-weight: 300;
+        }
+
+        .artwork-details {
+            margin: 2rem 0;
+            font-weight: 300;
+        }
+
+        .artwork-details p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .navigation-buttons {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 2rem;
+            z-index: 10;
+            background: rgba(10, 10, 12, 0.8);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-button {
+            color: var(--text-color);
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 0.8rem 2rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-button:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .nav-button:active {
+            transform: translateY(0);
+        }
+
+        .nav-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
+        }
+
+        .nav-button:hover::before {
+            transform: translateX(100%);
+        }
+
+        footer {
+            background-color: var(--background-color);
+            padding: 3rem 2rem;
+            margin-top: 4rem;
+            border-top: 1px solid var(--text-color);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .footer-section {
+            padding: 0 1rem;
+        }
+
+        .footer-section h3 {
+            font-size: 1.2rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+        }
+
+        .footer-section p {
+            font-size: 1rem;
+            font-weight: 300;
+            margin-bottom: 0.5rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .social-links a:hover {
+            opacity: 0.7;
+        }
+
+        @media (max-width: 768px) {
+            .artwork {
+                flex-direction: column;
+            }
+
+            .artwork-image,
+            .artwork-info {
+                flex: 0 0 100%;
+            }
+
+            .navigation-buttons {
+                padding: 0.8rem 1.5rem;
+                gap: 1rem;
+            }
+
+            .nav-button {
+                padding: 0.6rem 1.5rem;
+                font-size: 0.8rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo"><a href="index.html">Marine Gallet</a></div>
+            <div class="burger-menu">
+                <div class="burger-line"></div>
+                <div class="burger-line"></div>
+                <div class="burger-line"></div>
+            </div>
+            <div class="menu">
+                <a href="index.html" data-translate="menu.home">Accueil</a>
+                <a href="boutique.html" data-translate="menu.shop">Boutique</a>
+                <a href="histoire.html" data-translate="menu.story">Ma Démarche Artistique</a>
+                <a href="contact.html" data-translate="menu.contact">Contact</a>
+                <a href="https://drive.google.com/file/d/1J7NZzIOv6W2n0xAmc0MIgOvGI9QjqqJq/view" target="_blank" data-translate="menu.portfolio">Portfolio</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="boutique-content">
+        <div class="artwork-container">
+            <div class="artwork active">
+                <div class="artwork-image">
+                    <img src="images/series1.png" alt="Cosmos I">
+                </div>
+                <div class="artwork-info">
+                    <h2 class="artwork-title">Cosmos I</h2>
+                    <div class="artwork-details">
+                        <p><strong data-translate="shop.year">Année</strong> : 2023</p>
+                        <p><strong data-translate="shop.edition">Tirage</strong> : 5 <span data-translate="shop.copies">exemplaires</span></p>
+                        <p><strong data-translate="shop.dimensions">Dimensions</strong> : 60 x 90 cm</p>
+                        <p><strong data-translate="shop.price">Prix</strong> : 850€</p>
+                        <p>Tirage fine art sur papier Hahnemühle</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="artwork">
+                <div class="artwork-image">
+                    <img src="images/serie2.jpg" alt="R.A.P.T.">
+                </div>
+                <div class="artwork-info">
+                    <h2 class="artwork-title">R.A.P.T.</h2>
+                    <div class="artwork-details">
+                        <p><strong data-translate="shop.year">Année</strong> : 2024</p>
+                        <p><strong data-translate="shop.edition">Tirage</strong> : 3 <span data-translate="shop.copies">exemplaires</span></p>
+                        <p><strong data-translate="shop.dimensions">Dimensions</strong> : 80 x 120 cm</p>
+                        <p><strong data-translate="shop.price">Prix</strong> : 1200€</p>
+                        <p>Tirage fine art sur papier Hahnemühle</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation-buttons">
+            <button class="nav-button" onclick="previousArtwork()" data-translate="shop.previous">Précédent</button>
+            <button class="nav-button" onclick="nextArtwork()" data-translate="shop.next">Suivant</button>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3 data-translate="contact.info">Informations</h3>
+                <p data-translate="contact.email">Email : marinegallet.art.designer@gmail.com</p>
+            </div>
+            <div class="footer-section">
+                <h3 data-translate="contact.follow">Suivez mon travail</h3>
+                <div class="social-links">
+                    <a href="https://www.instagram.com/marniegallet/" target="_blank">Instagram</a>
+                    <a href="https://fr.linkedin.com/in/marine-gallet-ab2a62a9" target="_blank">LinkedIn</a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <p data-translate="contact.message">Pour toute demande de collaboration ou d'information sur mes œuvres, n'hésitez pas à me contacter.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let currentArtwork = 0;
+        const artworks = document.querySelectorAll('.artwork');
+
+        function showArtwork(index) {
+            artworks.forEach(artwork => {
+                artwork.classList.remove('active');
+                artwork.style.transform = 'translateX(100%)';
+                artwork.style.opacity = '0';
+            });
+
+            artworks[index].classList.add('active');
+            artworks[index].style.transform = 'translateX(0)';
+            artworks[index].style.opacity = '1';
+        }
+
+        function nextArtwork() {
+            currentArtwork = (currentArtwork + 1) % artworks.length;
+            showArtwork(currentArtwork);
+        }
+
+        function previousArtwork() {
+            currentArtwork = (currentArtwork - 1 + artworks.length) % artworks.length;
+            showArtwork(currentArtwork);
+        }
+
+        // Swipe detection for mobile
+        let touchstartX = 0;
+        let touchendX = 0;
+
+        document.addEventListener('touchstart', e => {
+            touchstartX = e.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', e => {
+            touchendX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            if (touchendX < touchstartX) nextArtwork();
+            if (touchendX > touchstartX) previousArtwork();
+        }
+    </script>
+    <script src="translations.js"></script>
+    <script src="theme-lang.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

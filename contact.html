@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Marine Gallet</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .contact-content {
+            max-width: 600px;
+            margin: 120px auto 50px;
+            padding: 0 2rem;
+        }
+
+        .contact-info {
+            margin-top: 2rem;
+            line-height: 1.8;
+        }
+
+        .contact-info h2 {
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+        }
+
+        .contact-info p {
+            margin-bottom: 1rem;
+            font-weight: 300;
+        }
+
+        .social-links {
+            margin-top: 2rem;
+        }
+
+        .social-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            margin-right: 1.5rem;
+            transition: opacity 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            font-weight: 300;
+        }
+
+        .social-links a:hover {
+            opacity: 0.7;
+        }
+
+        .contact-info .highlight {
+            font-weight: 400;
+            color: var(--text-color);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Marine Gallet</div>
+            <div class="burger-menu">
+                <div class="burger-line"></div>
+                <div class="burger-line"></div>
+                <div class="burger-line"></div>
+            </div>
+            <div class="menu">
+                <a href="index.html" data-translate="menu.home">Accueil</a>
+                <a href="histoire.html" data-translate="menu.story">Ma Démarche Artistique</a>
+                <a href="https://drive.google.com/file/d/1J7NZzIOv6W2n0xAmc0MIgOvGI9QjqqJq/view" target="_blank" data-translate="menu.portfolio">Portfolio</a>
+                <a href="contact.html" data-translate="menu.contact">Contact</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="contact-content">
+        <h1 data-translate="contact.title">Contact</h1>
+        <div class="contact-info">
+            <h2 data-translate="contact.info">Informations</h2>
+            <p data-translate="contact.message">Pour toute demande de collaboration ou d'information sur mes œuvres, n'hésitez pas à me contacter.</p>
+            
+            <p data-translate="contact.email">Email : marinegallet.art.designer@gmail.com</p>
+            <p data-translate="contact.instagram">Instagram : @r0ndn0ir</p>
+            <p data-translate="contact.linkedin">LinkedIn : Marine Gallet</p>
+            
+            <h3 data-translate="contact.follow">Suivez mon travail</h3>
+            <div class="social-links">
+                <a href="https://www.instagram.com/marniegallet/" target="_blank">Instagram</a>
+                <a href="https://fr.linkedin.com/in/marine-gallet-ab2a62a9" target="_blank">LinkedIn</a>
+            </div>
+        </div>
+    </main>
+
+    <script src="translations.js"></script>
+    <script src="theme-lang.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
